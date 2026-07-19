@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>UIANA LOSER PRO MAX</title>
+<meta name="description" content="Quem será o próximo loser? Corrida de tabuleiro multiplayer pra jogar com os amigos.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+
+  <button id="btn-sound" class="btn-icon-round" aria-label="Ativar/desativar som">🔊</button>
+
+  <!-- ===================== TELA INICIAL ===================== -->
+  <section id="screen-start" class="screen active">
+    <span class="forest-deco deco-tree-1">🌲</span>
+    <span class="forest-deco deco-tree-2">🌳</span>
+    <span class="forest-deco deco-mush">🍄</span>
+    <span class="forest-deco deco-leaf">🍃</span>
+    <span class="forest-deco deco-butterfly">🦋</span>
+    <span class="forest-deco deco-frog">🐸</span>
+
+    <div class="start-content">
+      <div class="logo-sign">
+        <h1 class="logo-title">UIANA<br>LOSER<br>PRO MAX</h1>
+        <p class="logo-sub">Quem será o próximo loser? SEUS LOSERS! 🏆</p>
+      </div>
+      <div class="start-buttons">
+        <button id="btn-create" class="btn-primary">🎲 Criar sala</button>
+        <button id="btn-join" class="btn-secondary">🚪 Entrar em uma sala</button>
+        <button id="btn-how" class="btn-ghost">❓ Como jogar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TUTORIAL ===================== -->
+  <section id="screen-tutorial" class="screen">
+    <div class="tutorial-card">
+      <h2>Como jogar</h2>
+      <ol class="tutorial-list">
+        <li>Crie ou entre em uma sala com até 4 losers.</li>
+        <li>Escolha seu nome, boneco e cor.</li>
+        <li>Aguarde a roleta definir a ordem dos jogadores.</li>
+        <li>Na sua vez, toque no dado para jogar.</li>
+        <li>Seu boneco anda a quantidade sorteada, casa por casa.</li>
+        <li>Cumpra os efeitos das casas especiais (sorte ou azar!).</li>
+        <li>Chegue até a casa da Chegada antes dos outros.</li>
+        <li>Dispute o pódio — e tente não ser o último colocado!</li>
+      </ol>
+    </div>
+    <button id="btn-tutorial-back" class="btn-ghost" style="max-width:480px;margin:10px auto;width:calc(100% - 40px)">Voltar</button>
+  </section>
+
+  <!-- ===================== SETUP (criar / entrar) ===================== -->
+  <section id="screen-setup" class="screen">
+    <div class="setup-card">
+      <h2 id="setup-title">Criar sala</h2>
+
+      <div id="code-field" style="display:none">
+        <div class="field-label">Código da sala</div>
+        <input id="room-code-input" class="text-input" maxlength="5" placeholder="EX: A1B2C" style="text-transform:uppercase">
+      </div>
+
+      <div class="field-label">Seu nome</div>
+      <input id="player-name-input" class="text-input" maxlength="16" placeholder="Digite seu nome">
+
+      <div class="field-label">Escolha seu boneco</div>
+      <div id="avatar-picker" class="picker-grid"></div>
+
+      <div class="field-label">Escolha sua cor</div>
+      <div id="color-picker" class="picker-grid"></div>
+
+      <div class="setup-actions">
+        <button id="btn-setup-confirm" class="btn-primary">Confirmar</button>
+        <button id="btn-setup-back" class="back-link">‹ Voltar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SALA DE ESPERA ===================== -->
+  <section id="screen-waiting" class="screen">
+    <div class="waiting-header">
+      <h2>Sala de espera</h2>
+      <div class="room-code-box" id="waiting-code">-----</div>
+      <p id="waiting-msg">Esperando os outros losers entrarem...</p>
+    </div>
+    <div class="waiting-players" id="waiting-players"></div>
+    <div style="max-width:480px;margin:16px auto 0;width:calc(100% - 0px);padding:0 4px">
+      <button id="btn-start-match" class="btn-primary" style="display:none">🚀 Iniciar partida</button>
+      <p id="waiting-hint" style="text-align:center;color:#2D6A4F;font-weight:700;display:none">Aguardando o anfitrião iniciar...</p>
+      <button id="btn-leave-room" class="back-link">Sair da sala</button>
+    </div>
+  </section>
+
+  <!-- ===================== ROLETA DE ORDEM ===================== -->
+  <section id="screen-roulette" class="screen">
+    <h2 style="color:#fff">🎡 Definindo a ordem...</h2>
+    <div id="roulette-names"></div>
+    <div id="roulette-status"></div>
+    <div id="roulette-result"></div>
+  </section>
+
+  <!-- ===================== TABULEIRO ===================== -->
+  <section id="screen-board" class="screen">
+    <div class="board-topbar">
+      <span class="room-mini">Sala <span id="board-room-code"></span></span>
+      <div class="top-actions">
+        <button id="btn-toggle-panel" title="Ranking">📊</button>
+      </div>
+    </div>
+    <div id="board-scroll">
+      <div id="board-track"></div>
+      <div class="side-panel" id="panel-ranking"></div>
+    </div>
+    <div class="turn-bar">
+      <div id="turn-banner">Aguardando...</div>
+      <div id="turn-timer-bar" style="width:100%"></div>
+    </div>
+
+    <!-- Aviso grande no centro da tela: "vez de fulano" -->
+    <div id="turn-announce" class="turn-announce"></div>
+  </section>
+
+  <!-- ===================== TELA FINAL / PÓDIO ===================== -->
+  <section id="screen-final" class="screen">
+    <h1>🏆 FIM DE JOGO! 🏆</h1>
+    <div class="podium" id="podium"></div>
+    <div id="loser-area"></div>
+    <div class="final-actions">
+      <button id="btn-play-again" class="btn-primary">🔁 Jogar novamente</button>
+      <button id="btn-new-room" class="btn-secondary">🆕 Criar nova sala</button>
+      <button id="btn-back-home" class="btn-ghost">🏠 Voltar ao início</button>
+    </div>
+  </section>
+
+  <!-- ===================== MODAL: DADO ===================== -->
+  <div class="modal-overlay" id="dice-modal">
+    <div class="modal-card">
+      <h3 id="dice-turn-name">Sua vez!</h3>
+      <p id="dice-hint">Toque no dado para jogar!</p>
+      <button id="btn-dice" class="dice-3d">🎲</button>
+    </div>
+  </div>
+
+  <!-- ===================== MODAL: EVENTO ===================== -->
+  <div class="modal-overlay" id="event-modal">
+    <div class="modal-card">
+      <div class="event-icon-big" id="event-icon">❓</div>
+      <div class="event-cat-tag" id="event-cat">SURPRESA</div>
+      <h3 id="event-title">Título do evento</h3>
+      <p id="event-desc">Descrição do evento.</p>
+    </div>
+  </div>
+
+  <!-- ===================== MODAL: ESCOLHA DE JOGADOR ===================== -->
+  <div class="modal-overlay" id="choice-modal">
+    <div class="modal-card">
+      <h3 id="choice-title">Escolha um jogador!</h3>
+      <div id="choice-list"></div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+</div>
+
+<!-- Firebase SDK (compat, mais simples de usar sem bundler) -->
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
+
+<script src="js/firebase-config.js"></script>
+<script src="js/board-data.js"></script>
+<script src="js/sound.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
